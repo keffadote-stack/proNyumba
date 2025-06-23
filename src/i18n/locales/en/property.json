@@ -1,0 +1,67 @@
+{
+  "card": {
+    "featured": "Featured",
+    "bedrooms": "{{count}} bedroom",
+    "bedrooms_plural": "{{count}} bedrooms",
+    "bathrooms": "{{count}} bathroom",
+    "bathrooms_plural": "{{count}} bathrooms",
+    "perMonth": "per month",
+    "view": "View",
+    "save": "Save",
+    "share": "Share",
+    "moreAmenities": "+{{count}} more"
+  },
+  "details": {
+    "backToSearch": "Back to search",
+    "back": "Back",
+    "save": "Save",
+    "share": "Share",
+    "report": "Report",
+    "aboutProperty": "About this property",
+    "amenities": "Amenities",
+    "location": "Location",
+    "mapComingSoon": "Interactive map coming soon",
+    "requestViewing": "Request Viewing",
+    "contactOwner": "Contact Owner",
+    "propertyId": "Property ID:",
+    "status": "Status:",
+    "serviceFee": "+ {{amount}} service fee"
+  },
+  "viewing": {
+    "requestViewing": "Request Viewing",
+    "preferredDate": "Preferred Date",
+    "preferredTime": "Preferred Time",
+    "selectTime": "Select time",
+    "message": "Message (Optional)",
+    "messagePlaceholder": "Any specific questions or requirements...",
+    "submitRequest": "Submit Request",
+    "requestSubmitted": "Viewing request submitted!"
+  },
+  "owner": {
+    "propertyOwner": "Property Owner",
+    "verifiedOwner": "Verified owner",
+    "callOwner": "Call Owner",
+    "sendMessage": "Send Message"
+  },
+  "types": {
+    "house": "House",
+    "apartment": "Apartment",
+    "studio": "Studio",
+    "villa": "Villa",
+    "room": "Room"
+  },
+  "amenities": {
+    "parking": "Parking",
+    "security": "Security",
+    "generator": "Generator",
+    "waterTank": "Water Tank",
+    "garden": "Garden",
+    "balcony": "Balcony",
+    "airConditioning": "Air Conditioning",
+    "internet": "Internet",
+    "swimmingPool": "Swimming Pool",
+    "gym": "Gym",
+    "elevator": "Elevator",
+    "furnished": "Furnished"
+  }
+}

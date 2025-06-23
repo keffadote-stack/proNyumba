@@ -1,0 +1,54 @@
+{
+  "title": {
+    "main": "Pata Nyumba Yako",
+    "highlight": "Kamili Tanzania"
+  },
+  "subtitle": "Gundua nyumba na ghorofa nzuri za kupangisha katika miji mikuu ya Tanzania. Nyumba ya ndoto yako ni umbali wa kubofya tu.",
+  "searchForm": {
+    "title": "Tafuta Mali",
+    "location": {
+      "label": "Eneo",
+      "placeholder": "Miji Yote",
+      "allCities": "Miji Yote"
+    },
+    "propertyType": {
+      "label": "Aina ya Mali",
+      "placeholder": "Aina Zote",
+      "allTypes": "Aina Zote",
+      "house": "Nyumba",
+      "apartment": "Ghorofa",
+      "studio": "Studio",
+      "villa": "Villa",
+      "room": "Chumba"
+    },
+    "bedrooms": {
+      "label": "Vyumba",
+      "placeholder": "Yoyote",
+      "any": "Yoyote",
+      "bedroom": "chumba",
+      "bedrooms": "vyumba"
+    },
+    "price": {
+      "label": "Bei ya Juu (TSh)",
+      "placeholder": "Bei Yoyote",
+      "anyPrice": "Bei Yoyote",
+      "helperText": "Ingiza kiasi au bofya mapendekezo hapa chini"
+    },
+    "searchButton": "Tafuta Mali",
+    "tips": "Vidokezo vya haraka: Jaribu \"Mbeya 500k\", \"vyumba 3 Dar\", au \"ghorofa parking\""
+  },
+  "stats": {
+    "properties": {
+      "count": "500+",
+      "label": "Mali Zilizoorodheshwa"
+    },
+    "cities": {
+      "count": "10+",
+      "label": "Miji Iliyoshughulikiwa"
+    },
+    "tenants": {
+      "count": "1000+",
+      "label": "Wapangaji Wenye Furaha"
+    }
+  }
+}

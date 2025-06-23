@@ -1,0 +1,33 @@
+{
+  "logo": "NyumbaTZ",
+  "navigation": {
+    "properties": "Properties",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "search": {
+    "placeholder": "Search properties...",
+    "expandedPlaceholder": "Search by location, price, property type, amenities...",
+    "popularSearches": "Popular searches",
+    "clearSearch": "Clear Search",
+    "searchResults": "Search Results for: \"{{query}}\"",
+    "foundProperties": "Found {{count}} properties matching your search"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "profile": "Profile",
+    "dashboard": "Dashboard"
+  },
+  "user": {
+    "favorites": "Favorites",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "help": "Help"
+  },
+  "mobile": {
+    "menu": "Menu",
+    "close": "Close"
+  }
+}

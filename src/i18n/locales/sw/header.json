@@ -1,0 +1,33 @@
+{
+  "logo": "NyumbaTZ",
+  "navigation": {
+    "properties": "Mali",
+    "about": "Kuhusu",
+    "contact": "Mawasiliano"
+  },
+  "search": {
+    "placeholder": "Tafuta mali...",
+    "expandedPlaceholder": "Tafuta kwa eneo, bei, aina ya mali, huduma...",
+    "popularSearches": "Utafutaji maarufu",
+    "clearSearch": "Futa Utafutaji",
+    "searchResults": "Matokeo ya Utafutaji ya: \"{{query}}\"",
+    "foundProperties": "Imepatikana mali {{count}} zinazofanana na utafutaji wako"
+  },
+  "auth": {
+    "signIn": "Ingia",
+    "signUp": "Jisajili",
+    "signOut": "Toka",
+    "profile": "Wasifu",
+    "dashboard": "Dashibodi"
+  },
+  "user": {
+    "favorites": "Vipendwa",
+    "notifications": "Arifa",
+    "settings": "Mipangilio",
+    "help": "Msaada"
+  },
+  "mobile": {
+    "menu": "Menyu",
+    "close": "Funga"
+  }
+}

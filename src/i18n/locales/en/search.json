@@ -1,0 +1,53 @@
+{
+  "filters": {
+    "title": "Filters",
+    "location": "Location",
+    "allCities": "All cities",
+    "priceRange": "Price Range (TZS)",
+    "minPrice": "Min price",
+    "maxPrice": "Max price",
+    "popularRanges": "Popular ranges: 200K-500K, 500K-1M, 1M-2M, 2M+",
+    "propertyType": "Property Type",
+    "allTypes": "All Types",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "any": "Any",
+    "amenities": "Amenities",
+    "availableFrom": "Available From",
+    "clearAll": "Clear All",
+    "applyFilters": "Apply Filters"
+  },
+  "results": {
+    "searchResults": "Search Results",
+    "filteredResults": "Filtered Results",
+    "searchResultsFor": "Search Results for: \"{{query}}\"",
+    "foundProperties": "Found {{count}} properties matching your search",
+    "foundPropertiesFiltered": "Found {{count}} properties matching your criteria",
+    "clearSearch": "Clear Search",
+    "showAll": "Show All",
+    "propertiesAvailable": "{{count}} Properties Available",
+    "showingProperties": "Showing {{displayed}} of {{total}}",
+    "loadMore": "Load More Properties",
+    "backToTop": "Back to Top",
+    "modifySearch": "Modify Search"
+  },
+  "sorting": {
+    "sortBy": "Sort by",
+    "featured": "Featured First",
+    "priceLowHigh": "Price: Low to High",
+    "priceHighLow": "Price: High to Low",
+    "newest": "Newest First"
+  },
+  "noResults": {
+    "title": "No properties found",
+    "titleWithQuery": "No properties found for \"{{query}}\"",
+    "description": "Try searching with different keywords like location, price, or property type",
+    "descriptionFiltered": "Try adjusting your filters or search criteria",
+    "examples": "Search examples: \"Mbeya\", \"500000\", \"apartment\", \"3 bedrooms\", \"parking\"",
+    "clearAndShowAll": "Clear search and show all properties"
+  },
+  "endOfResults": {
+    "title": "You've seen all properties!",
+    "description": "You've viewed all {{count}} properties matching your criteria."
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "title": {
+    "main": "Find Your Perfect",
+    "highlight": "Home in Tanzania"
+  },
+  "subtitle": "Discover beautiful houses and apartments for rent across Tanzania's major cities. Your dream home is just a click away.",
+  "searchForm": {
+    "title": "Search Properties",
+    "location": {
+      "label": "Location",
+      "placeholder": "All Cities",
+      "allCities": "All Cities"
+    },
+    "propertyType": {
+      "label": "Property Type",
+      "placeholder": "All Types",
+      "allTypes": "All Types",
+      "house": "House",
+      "apartment": "Apartment",
+      "studio": "Studio",
+      "villa": "Villa",
+      "room": "Room"
+    },
+    "bedrooms": {
+      "label": "Bedrooms",
+      "placeholder": "Any",
+      "any": "Any",
+      "bedroom": "bedroom",
+      "bedrooms": "bedrooms"
+    },
+    "price": {
+      "label": "Max Price (TSh)",
+      "placeholder": "Any Price",
+      "anyPrice": "Any Price",
+      "helperText": "Enter amount or click suggestions below"
+    },
+    "searchButton": "Search Properties",
+    "tips": "Quick tips: Try \"Mbeya 500k\", \"3 bedrooms Dar\", or \"apartment parking\""
+  },
+  "stats": {
+    "properties": {
+      "count": "500+",
+      "label": "Properties Listed"
+    },
+    "cities": {
+      "count": "10+",
+      "label": "Cities Covered"
+    },
+    "tenants": {
+      "count": "1000+",
+      "label": "Happy Tenants"
+    }
+  }
+}

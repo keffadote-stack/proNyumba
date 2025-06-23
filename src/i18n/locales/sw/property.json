@@ -1,0 +1,67 @@
+{
+  "card": {
+    "featured": "Iliyoangaziwa",
+    "bedrooms": "chumba {{count}}",
+    "bedrooms_plural": "vyumba {{count}}",
+    "bathrooms": "bafu {{count}}",
+    "bathrooms_plural": "bafu {{count}}",
+    "perMonth": "kwa mwezi",
+    "view": "Ona",
+    "save": "Hifadhi",
+    "share": "Shiriki",
+    "moreAmenities": "+{{count}} zaidi"
+  },
+  "details": {
+    "backToSearch": "Rudi kwenye utafutaji",
+    "back": "Rudi",
+    "save": "Hifadhi",
+    "share": "Shiriki",
+    "report": "Ripoti",
+    "aboutProperty": "Kuhusu mali hii",
+    "amenities": "Huduma",
+    "location": "Mahali",
+    "mapComingSoon": "Ramani ya maingiliano inakuja hivi karibuni",
+    "requestViewing": "Omba Kuona",
+    "contactOwner": "Wasiliana na Mmiliki",
+    "propertyId": "Kitambulisho cha Mali:",
+    "status": "Hali:",
+    "serviceFee": "+ {{amount}} ada ya huduma"
+  },
+  "viewing": {
+    "requestViewing": "Omba Kuona",
+    "preferredDate": "Tarehe Unayopendelea",
+    "preferredTime": "Muda Unaopendelea",
+    "selectTime": "Chagua muda",
+    "message": "Ujumbe (Si lazima)",
+    "messagePlaceholder": "Maswali au mahitaji maalum yoyote...",
+    "submitRequest": "Tuma Ombi",
+    "requestSubmitted": "Ombi la kuona limetumwa!"
+  },
+  "owner": {
+    "propertyOwner": "Mmiliki wa Mali",
+    "verifiedOwner": "Mmiliki aliyethibitishwa",
+    "callOwner": "Piga Simu Mmiliki",
+    "sendMessage": "Tuma Ujumbe"
+  },
+  "types": {
+    "house": "Nyumba",
+    "apartment": "Ghorofa",
+    "studio": "Studio",
+    "villa": "Villa",
+    "room": "Chumba"
+  },
+  "amenities": {
+    "parking": "Maegesho ya Magari",
+    "security": "Usalama",
+    "generator": "Jenereta",
+    "waterTank": "Tanki la Maji",
+    "garden": "Bustani",
+    "balcony": "Balcony",
+    "airConditioning": "Uongozaji wa Hewa",
+    "internet": "Mtandao",
+    "swimmingPool": "Bwawa la Kuogelea",
+    "gym": "Gym",
+    "elevator": "Elevator",
+    "furnished": "Imeandaliwa"
+  }
+}

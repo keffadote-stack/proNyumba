@@ -1,0 +1,83 @@
+{
+  "buttons": {
+    "save": "Hifadhi",
+    "cancel": "Ghairi",
+    "submit": "Tuma",
+    "search": "Tafuta",
+    "clear": "Futa",
+    "loadMore": "Pakia Zaidi",
+    "viewDetails": "Ona Maelezo",
+    "contact": "Wasiliana",
+    "apply": "Tumia",
+    "close": "Funga",
+    "back": "Rudi",
+    "next": "Ifuatayo",
+    "previous": "Iliyotangulia",
+    "edit": "Hariri",
+    "delete": "Futa",
+    "confirm": "Thibitisha",
+    "signIn": "Ingia",
+    "signUp": "Jisajili",
+    "signOut": "Toka"
+  },
+  "navigation": {
+    "home": "Nyumbani",
+    "properties": "Mali",
+    "about": "Kuhusu",
+    "contact": "Mawasiliano",
+    "dashboard": "Dashibodi",
+    "profile": "Wasifu",
+    "settings": "Mipangilio"
+  },
+  "status": {
+    "available": "Inapatikana",
+    "rented": "Imepangishwa",
+    "maintenance": "Matengenezo",
+    "pending": "Inasubiri",
+    "approved": "Imeidhinishwa",
+    "rejected": "Imekataliwa",
+    "completed": "Imekamilika",
+    "loading": "Inapakia...",
+    "error": "Hitilafu",
+    "success": "Mafanikio"
+  },
+  "time": {
+    "perMonth": "kwa mwezi",
+    "perYear": "kwa mwaka",
+    "daily": "Kila siku",
+    "weekly": "Kila wiki",
+    "monthly": "Kila mwezi",
+    "today": "Leo",
+    "yesterday": "Jana",
+    "tomorrow": "Kesho"
+  },
+  "currency": {
+    "tsh": "TSh",
+    "usd": "USD",
+    "eur": "EUR"
+  },
+  "messages": {
+    "welcome": "Karibu NyumbaTZ",
+    "noResults": "Hakuna matokeo yaliyopatikana",
+    "tryAgain": "Tafadhali jaribu tena",
+    "success": "Shughuli imekamilika kwa mafanikio",
+    "error": "Kuna tatizo lililotokea",
+    "loading": "Inapakia, tafadhali subiri...",
+    "comingSoon": "Inakuja hivi karibuni",
+    "underMaintenance": "Chini ya matengenezo"
+  },
+  "validation": {
+    "required": "Sehemu hii inahitajika",
+    "email": "Tafadhali ingiza barua pepe sahihi",
+    "phone": "Tafadhali ingiza nambari ya simu sahihi",
+    "minLength": "Angalau herufi {{count}} zinahitajika",
+    "maxLength": "Herufi {{count}} tu zinazoruhusiwa",
+    "invalidFormat": "Muundo si sahihi"
+  },
+  "language": {
+    "english": "Kiingereza",
+    "swahili": "Kiswahili",
+    "selectLanguage": "Chagua Lugha",
+    "changeLanguage": "Badilisha Lugha"
+  }
+}

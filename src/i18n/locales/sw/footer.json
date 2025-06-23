@@ -1,0 +1,62 @@
+{
+  "company": {
+    "name": "NyumbaTZ",
+    "description": "Mshirika wako wa kuaminika wa kupata nyumba kamili Tanzania. Kuunganisha wamiliki wa mali na wapangaji katika miji mikuu.",
+    "descriptionSwahili": "Mshirika wako wa kuaminika wa kupata nyumba kamili Tanzania."
+  },
+  "social": {
+    "title": "Tufuate",
+    "titleSwahili": "Tufuate"
+  },
+  "quickLinks": {
+    "title": "Viungo vya Haraka",
+    "searchProperties": "Tafuta Mali",
+    "listProperty": "Orodhesha Mali Yako",
+    "howItWorks": "Jinsi Inavyofanya Kazi",
+    "pricing": "Bei",
+    "faq": "Maswali Yanayoulizwa Mara Kwa Mara"
+  },
+  "support": {
+    "title": "Msaada na Kisheria",
+    "supportTitle": "Msaada",
+    "supportTitleSwahili": "Msaada",
+    "legalTitle": "Kisheria",
+    "legalTitleSwahili": "Kisheria",
+    "helpCenter": "Kituo cha Msaada",
+    "contactSupport": "Wasiliana na Msaada",
+    "reportIssue": "Ripoti Tatizo",
+    "safetyTips": "Vidokezo vya Usalama",
+    "termsOfService": "Masharti ya Huduma",
+    "privacyPolicy": "Sera ya Faragha",
+    "cookiePolicy": "Sera ya Vidakuzi",
+    "refundPolicy": "Sera ya Kurejesha Pesa"
+  },
+  "contact": {
+    "title": "Wasiliana Nasi",
+    "phone": "+255 123 456 789",
+    "phoneLabel": "Msaada wa Saa 24/7",
+    "email": "info@nyumbatz.com",
+    "emailLabel": "Maswali ya jumla",
+    "whatsapp": "Msaada wa WhatsApp",
+    "whatsappNumber": "+255 987 654 321",
+    "address": "Mbeya, Tanzania",
+    "addressLabel": "Makao makuu",
+    "citiesTitle": "Miji Tunayoshughulika"
+  },
+  "newsletter": {
+    "title": "Baki Umejulishwa",
+    "description": "Pokea habari za mali na sasisho kwenye barua pepe yako",
+    "descriptionSwahili": "Pokea habari za mali na sasisho kwenye barua pepe yako",
+    "placeholder": "Ingiza barua pepe yako",
+    "placeholderSwahili": "Ingiza barua pepe yako",
+    "subscribe": "Jiunge",
+    "subscribeSwahili": "Jiunge"
+  },
+  "bottom": {
+    "copyright": "© {{year}} NyumbaTZ. Haki zote zimehifadhiwa.",
+    "madeWith": "Imetengenezwa kwa",
+    "by": "na MalixTechnologies",
+    "poweredBy": "Inaendeshwa na teknolojia ya kisasa",
+    "systemStatus": "Mifumo yote inafanya kazi"
+  }
+}

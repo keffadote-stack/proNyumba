@@ -1,0 +1,62 @@
+{
+  "company": {
+    "name": "NyumbaTZ",
+    "description": "Your trusted partner for finding the perfect home in Tanzania. Connecting property owners with tenants across major cities.",
+    "descriptionSwahili": "Mshirika wako wa kuaminika wa kupata nyumba kamili Tanzania."
+  },
+  "social": {
+    "title": "Follow Us",
+    "titleSwahili": "Tufuate"
+  },
+  "quickLinks": {
+    "title": "Quick Links",
+    "searchProperties": "Search Properties",
+    "listProperty": "List Your Property",
+    "howItWorks": "How It Works",
+    "pricing": "Pricing",
+    "faq": "FAQ"
+  },
+  "support": {
+    "title": "Support & Legal",
+    "supportTitle": "Support",
+    "supportTitleSwahili": "Msaada",
+    "legalTitle": "Legal",
+    "legalTitleSwahili": "Kisheria",
+    "helpCenter": "Help Center",
+    "contactSupport": "Contact Support",
+    "reportIssue": "Report Issue",
+    "safetyTips": "Safety Tips",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "cookiePolicy": "Cookie Policy",
+    "refundPolicy": "Refund Policy"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "phone": "+255 123 456 789",
+    "phoneLabel": "24/7 Support",
+    "email": "info@nyumbatz.com",
+    "emailLabel": "General inquiries",
+    "whatsapp": "WhatsApp Support",
+    "whatsappNumber": "+255 987 654 321",
+    "address": "Mbeya, Tanzania",
+    "addressLabel": "Headquarters",
+    "citiesTitle": "Cities We Serve"
+  },
+  "newsletter": {
+    "title": "Stay Updated",
+    "description": "Get the latest properties and updates delivered to your inbox",
+    "descriptionSwahili": "Pokea habari za mali na sasisho kwenye barua pepe yako",
+    "placeholder": "Enter your email",
+    "placeholderSwahili": "Ingiza barua pepe yako",
+    "subscribe": "Subscribe",
+    "subscribeSwahili": "Jiunge"
+  },
+  "bottom": {
+    "copyright": "© {{year}} NyumbaTZ. All rights reserved.",
+    "madeWith": "Made with",
+    "by": "by MalixTechnologies",
+    "poweredBy": "Powered by modern technology",
+    "systemStatus": "All systems operational"
+  }
+}

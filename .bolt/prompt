@@ -1,0 +1,499 @@
+# Bolt.new MVP Prompt - Nyumba Connect Housing Rental Platform (Supabase Edition)
+
+## Primary Instruction
+
+Create a **Minimum Viable Product (MVP)** for "Nyumba Connect" - a simple but functional housing rental platform for Tanzania using **Supabase** for real database and authentication. Focus on core features that solve the main problem: connecting property owners with tenants quickly and efficiently.
+
+## MVP Core Features (Essential Only)
+
+### 1. Real User Authentication (Supabase Auth)
+- **Supabase Auth registration**: Name, email, phone, user type (Tenant/Landlord)
+- **Email/password login** with Supabase Auth
+- **Profile management**: Avatar upload to Supabase Storage, contact info, verification status
+- **Password reset functionality** via Supabase
+- **User roles/types** stored in profiles table
+
+### 2. Property Listing (Landlords) - Real Database
+- **Add Property Form** with Supabase integration:
+  - Property title, description, type, bedrooms, bathrooms
+  - Monthly rent price, location (city and area)
+  - Contact phone number
+  - **Image upload to Supabase Storage** (3-5 photos per property)
+  - Real-time save to PostgreSQL database
+- **My Properties page**: Fetch user's properties from database
+- **Edit/Delete property** with real database updates
+- **Property status management** (Available/Rented)
+
+### 3. Property Search (Tenants) - Database Queries
+- **Homepage with real-time search**: PostgreSQL full-text search
+- **Advanced filters with database queries**:
+  - Price range filtering
+  - Property type filtering
+  - Bedroom count filtering
+  - Location-based search
+- **Property listings**: Real-time data from Supabase
+- **Property details**: Dynamic data loading with image galleries
+- **Contact system**: Store inquiries in database
+
+### 4. Real Contact & Inquiry System
+- **Inquiry tracking**: Store all tenant inquiries in database
+- **Landlord notifications**: Real-time updates using Supabase Realtime
+- **Contact history**: Track all communications
+- **WhatsApp integration**: Generate links with property details
+- **Email notifications**: Using Supabase Edge Functions
+
+### 5. Essential Pages (Database-Driven)
+- **Homepage**: Dynamic featured properties from database
+- **Property Listings**: Real search results with pagination
+- **Property Details**: Dynamic property information
+- **Add/Edit Property**: Real form submissions to database
+- **My Properties**: Live landlord dashboard
+- **My Inquiries**: Tenant inquiry history
+- **Login/Register**: Supabase Auth integration
+- **Profile Management**: Real user data updates
+
+## Technical Requirements (Supabase Integration)
+
+### Tech Stack
+- **React.js** with TypeScript
+- **Tailwind CSS** for styling
+- **React Router** for navigation
+- **Supabase** for:
+  - PostgreSQL database
+  - Authentication
+  - File storage
+  - Real-time subscriptions
+  - Edge Functions
+- **React Query/SWR** for data fetching and caching
+- **React Hook Form** for form management
+
+### Supabase Setup Requirements
+
+#### 1. Database Schema (SQL)
+```sql
+-- Enable RLS (Row Level Security)
+alter table auth.users enable row level security;
+
+-- Profiles table (extends auth.users)
+create table profiles (
+  id uuid references auth.users on delete cascade primary key,
+  full_name text,
+  phone text,
+  user_type text check (user_type in ('tenant', 'landlord')),
+  avatar_url text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Properties table
+create table properties (
+  id uuid default gen_random_uuid() primary key,
+  owner_id uuid references auth.users on delete cascade not null,
+  title text not null,
+  description text,
+  property_type text check (property_type in ('house', 'apartment', 'room')) not null,
+  bedrooms integer not null,
+  bathrooms integer not null,
+  monthly_rent numeric not null,
+  city text not null,
+  area text not null,
+  contact_phone text not null,
+  images text[], -- Array of image URLs
+  is_available boolean default true,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Inquiries table
+create table inquiries (
+  id uuid default gen_random_uuid() primary key,
+  property_id uuid references properties on delete cascade not null,
+  tenant_id uuid references auth.users on delete cascade not null,
+  landlord_id uuid references auth.users on delete cascade not null,
+  message text not null,
+  tenant_name text not null,
+  tenant_phone text not null,
+  status text check (status in ('pending', 'responded', 'closed')) default 'pending',
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Enable full-text search on properties
+alter table properties add column search_vector tsvector;
+create index properties_search_idx on properties using gin(search_vector);
+
+-- Function to update search vector
+create or replace function update_properties_search_vector()
+returns trigger as $$
+begin
+  new.search_vector := to_tsvector('english', 
+    coalesce(new.title, '') || ' ' ||
+    coalesce(new.description, '') || ' ' ||
+    coalesce(new.city, '') || ' ' ||
+    coalesce(new.area, '')
+  );
+  return new;
+end;
+$$ language plpgsql;
+
+-- Trigger to automatically update search vector
+create trigger update_properties_search_vector_trigger
+  before insert or update on properties
+  for each row execute function update_properties_search_vector();
+```
+
+#### 2. Row Level Security (RLS) Policies
+```sql
+-- Profiles policies
+create policy "Public profiles are viewable by everyone" on profiles
+  for select using (true);
+
+create policy "Users can insert their own profile" on profiles
+  for insert with check (auth.uid() = id);
+
+create policy "Users can update own profile" on profiles
+  for update using (auth.uid() = id);
+
+-- Properties policies
+create policy "Properties are viewable by everyone" on properties
+  for select using (true);
+
+create policy "Landlords can insert properties" on properties
+  for insert with check (auth.uid() = owner_id);
+
+create policy "Landlords can update own properties" on properties
+  for update using (auth.uid() = owner_id);
+
+create policy "Landlords can delete own properties" on properties
+  for delete using (auth.uid() = owner_id);
+
+-- Inquiries policies
+create policy "Landlords can view inquiries for their properties" on inquiries
+  for select using (auth.uid() = landlord_id);
+
+create policy "Tenants can view their own inquiries" on inquiries
+  for select using (auth.uid() = tenant_id);
+
+create policy "Tenants can create inquiries" on inquiries
+  for insert with check (auth.uid() = tenant_id);
+
+create policy "Landlords can update inquiry status" on inquiries
+  for update using (auth.uid() = landlord_id);
+```
+
+#### 3. Storage Buckets
+```sql
+-- Create storage buckets
+insert into storage.buckets (id, name, public) values 
+  ('avatars', 'avatars', true),
+  ('property-images', 'property-images', true);
+
+-- Storage policies
+create policy "Avatar images are publicly accessible" on storage.objects
+  for select using (bucket_id = 'avatars');
+
+create policy "Users can upload their own avatar" on storage.objects
+  for insert with check (bucket_id = 'avatars' and auth.uid()::text = (storage.foldername(name))[1]);
+
+create policy "Property images are publicly accessible" on storage.objects
+  for select using (bucket_id = 'property-images');
+
+create policy "Landlords can upload property images" on storage.objects
+  for insert with check (bucket_id = 'property-images');
+```
+
+### Environment Variables
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+## React Components Structure
+
+### 1. Authentication Components
+```typescript
+// hooks/useAuth.ts
+export const useAuth = () => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  // Supabase auth logic
+};
+
+// components/AuthForm.tsx
+export const LoginForm = () => {
+  // Supabase sign in logic
+};
+
+export const RegisterForm = () => {
+  // Supabase sign up + profile creation
+};
+```
+
+### 2. Property Management Components
+```typescript
+// hooks/useProperties.ts
+export const useProperties = (filters) => {
+  // React Query + Supabase queries
+};
+
+// components/PropertyForm.tsx
+export const PropertyForm = ({ propertyId }) => {
+  // Handle image uploads to Supabase Storage
+  // Submit property data to database
+};
+
+// components/PropertyList.tsx
+export const PropertyList = ({ filters }) => {
+  // Real-time property data from Supabase
+};
+```
+
+### 3. Real-time Features
+```typescript
+// hooks/useRealtime.ts
+export const useInquiries = (landlordId) => {
+  // Supabase real-time subscriptions
+  // Auto-update when new inquiries arrive
+};
+```
+
+## Sample Data (Seed Script)
+
+### Initial Data Setup
+```javascript
+// scripts/seedData.js
+const sampleUsers = [
+  {
+    email: 'landlord1@example.com',
+    password: 'password123',
+    full_name: 'Mwalimu Juma',
+    phone: '0754123456',
+    user_type: 'landlord'
+  },
+  // More sample users...
+];
+
+const sampleProperties = [
+  {
+    title: '3 Bedroom House in Kinondoni',
+    description: 'Beautiful house with garden and parking',
+    property_type: 'house',
+    bedrooms: 3,
+    bathrooms: 2,
+    monthly_rent: 800000,
+    city: 'Dar es Salaam',
+    area: 'Kinondoni',
+    contact_phone: '0754123456'
+  },
+  // More sample properties...
+];
+
+// Function to seed database
+async function seedDatabase() {
+  // Create users and properties using Supabase client
+}
+```
+
+## API Integration Patterns
+
+### 1. Property Search with Filters
+```typescript
+const searchProperties = async (searchTerm, filters) => {
+  let query = supabase
+    .from('properties')
+    .select(`
+      *,
+      profiles:owner_id (
+        full_name,
+        phone
+      )
+    `);
+
+  if (searchTerm) {
+    query = query.textSearch('search_vector', searchTerm);
+  }
+
+  if (filters.minPrice) {
+    query = query.gte('monthly_rent', filters.minPrice);
+  }
+
+  if (filters.maxPrice) {
+    query = query.lte('monthly_rent', filters.maxPrice);
+  }
+
+  if (filters.propertyType) {
+    query = query.eq('property_type', filters.propertyType);
+  }
+
+  if (filters.bedrooms) {
+    query = query.eq('bedrooms', filters.bedrooms);
+  }
+
+  return await query.order('created_at', { ascending: false });
+};
+```
+
+### 2. Image Upload Handling
+```typescript
+const uploadPropertyImages = async (files, propertyId) => {
+  const imageUrls = [];
+  
+  for (const file of files) {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${propertyId}/${Math.random()}.${fileExt}`;
+    
+    const { data, error } = await supabase.storage
+      .from('property-images')
+      .upload(fileName, file);
+      
+    if (!error) {
+      const { data: { publicUrl } } = supabase.storage
+        .from('property-images')
+        .getPublicUrl(fileName);
+      imageUrls.push(publicUrl);
+    }
+  }
+  
+  return imageUrls;
+};
+```
+
+### 3. Real-time Inquiries
+```typescript
+const useInquirySubscription = (landlordId) => {
+  const [inquiries, setInquiries] = useState([]);
+  
+  useEffect(() => {
+    const subscription = supabase
+      .channel('inquiries')
+      .on('postgres_changes', 
+        { 
+          event: 'INSERT', 
+          schema: 'public', 
+          table: 'inquiries',
+          filter: `landlord_id=eq.${landlordId}`
+        }, 
+        (payload) => {
+          setInquiries(prev => [payload.new, ...prev]);
+        }
+      )
+      .subscribe();
+      
+    return () => subscription.unsubscribe();
+  }, [landlordId]);
+  
+  return inquiries;
+};
+```
+
+## Deployment Configuration
+
+### Supabase Edge Functions (Optional)
+```typescript
+// functions/send-inquiry-notification/index.ts
+export default async function handler(req: Request) {
+  // Send email notification when new inquiry is created
+  // Can integrate with services like Resend or SendGrid
+}
+```
+
+### Environment Setup
+1. Create Supabase project
+2. Run SQL schema setup
+3. Configure authentication providers
+4. Set up storage buckets
+5. Deploy Edge Functions (if needed)
+6. Add environment variables to hosting platform
+
+## Security Considerations
+
+### 1. Row Level Security
+- All database operations filtered by user permissions
+- Users can only modify their own data
+- Public data (property listings) accessible to all
+
+### 2. Authentication
+- Secure password requirements
+- Email verification for new users
+- Protected routes in React app
+
+### 3. File Upload Security
+- File type validation
+- File size limits
+- Proper storage bucket policies
+
+## Performance Optimizations
+
+### 1. Database Indexes
+- Full-text search index on properties
+- Indexes on frequently queried columns
+- Proper foreign key relationships
+
+### 2. React Query Caching
+- Cache property data to reduce database calls
+- Background refetching for updated data
+- Optimistic updates for better UX
+
+### 3. Image Optimization
+- Image compression before upload
+- Lazy loading for property images
+- CDN delivery via Supabase Storage
+
+## Success Criteria for MVP
+
+✅ **Real user authentication with Supabase Auth**  
+✅ **Landlords can add properties with real database storage**  
+✅ **Image uploads work with Supabase Storage**  
+✅ **Real-time property search with database queries**  
+✅ **Inquiry system with database persistence**  
+✅ **Real-time notifications for new inquiries**  
+✅ **Proper data security with RLS policies**  
+✅ **Mobile-responsive design**  
+✅ **Production-ready deployment**  
+
+## Development Steps
+
+### Phase 1: Setup
+1. Create Supabase project
+2. Set up database schema and policies
+3. Configure authentication
+4. Set up storage buckets
+
+### Phase 2: Core Features
+1. Implement authentication flow
+2. Build property CRUD operations
+3. Add image upload functionality
+4. Create search and filter system
+
+### Phase 3: Advanced Features
+1. Add inquiry system
+2. Implement real-time notifications
+3. Add user profile management
+4. Optimize performance and security
+
+### Phase 4: Deployment
+1. Environment configuration
+2. Production database setup
+3. Security audit
+4. Performance testing
+
+## Future Enhancements (Post-MVP)
+
+- **Mobile app** with React Native + Supabase
+- **Push notifications** via Supabase Edge Functions
+- **Payment integration** with Stripe/Flutterwave
+- **Geolocation features** with PostGIS
+- **Advanced analytics** with Supabase Dashboard
+- **Multi-tenant architecture** for property management companies
+
+## Final Instructions
+
+Create a **production-ready MVP** using Supabase for real database functionality and authentication. This approach provides:
+
+- **Real data persistence** (no localStorage limitations)
+- **Scalable architecture** (PostgreSQL + real-time features)
+- **Professional authentication** (email verification, password reset)
+- **Secure file storage** (proper image handling)
+- **Real-time features** (live inquiries, notifications)
+
+Focus on building a robust foundation that can scale as the platform grows. The Supabase integration ensures the MVP can handle real users and real data from day one.

@@ -1,0 +1,53 @@
+{
+  "filters": {
+    "title": "Vichujio",
+    "location": "Eneo",
+    "allCities": "Miji yote",
+    "priceRange": "Bei (TZS)",
+    "minPrice": "Bei ya chini",
+    "maxPrice": "Bei ya juu",
+    "popularRanges": "Miwango maarufu: 200K-500K, 500K-1M, 1M-2M, 2M+",
+    "propertyType": "Aina ya Mali",
+    "allTypes": "Aina Zote",
+    "bedrooms": "Vyumba",
+    "bathrooms": "Bafu",
+    "any": "Yoyote",
+    "amenities": "Huduma",
+    "availableFrom": "Inapatikana Kutoka",
+    "clearAll": "Futa Yote",
+    "applyFilters": "Tumia Vichujio"
+  },
+  "results": {
+    "searchResults": "Matokeo ya Utafutaji",
+    "filteredResults": "Matokeo Yaliyochujwa",
+    "searchResultsFor": "Matokeo ya Utafutaji ya: \"{{query}}\"",
+    "foundProperties": "Imepatikana mali {{count}} zinazofanana na utafutaji wako",
+    "foundPropertiesFiltered": "Imepatikana mali {{count}} zinazofanana na vigezo vyako",
+    "clearSearch": "Futa Utafutaji",
+    "showAll": "Onyesha Zote",
+    "propertiesAvailable": "Mali {{count}} Zinapatikana",
+    "showingProperties": "Inaonyesha {{displayed}} kati ya {{total}}",
+    "loadMore": "Pakia Mali Zaidi",
+    "backToTop": "Rudi Juu",
+    "modifySearch": "Rekebisha Utafutaji"
+  },
+  "sorting": {
+    "sortBy": "Panga kwa",
+    "featured": "Zilizoangaziwa Kwanza",
+    "priceLowHigh": "Bei: Chini hadi Juu",
+    "priceHighLow": "Bei: Juu hadi Chini",
+    "newest": "Mpya Kwanza"
+  },
+  "noResults": {
+    "title": "Hakuna mali zilizopatikana",
+    "titleWithQuery": "Hakuna mali zilizopatikana kwa \"{{query}}\"",
+    "description": "Jaribu kutafuta kwa maneno tofauti kama eneo, bei, au aina ya mali",
+    "descriptionFiltered": "Jaribu kubadilisha vichujio vyako au vigezo vya utafutaji",
+    "examples": "Mifano ya utafutaji: \"Mbeya\", \"500000\", \"ghorofa\", \"vyumba 3\", \"parking\"",
+    "clearAndShowAll": "Futa utafutaji na onyesha mali zote"
+  },
+  "endOfResults": {
+    "title": "Umeona mali zote!",
+    "description": "Umeona mali zote {{count}} zinazofanana na vigezo vyako."
+  }
+}

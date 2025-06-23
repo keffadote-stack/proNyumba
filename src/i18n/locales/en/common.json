@@ -1,0 +1,83 @@
+{
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "search": "Search",
+    "clear": "Clear",
+    "loadMore": "Load More",
+    "viewDetails": "View Details",
+    "contact": "Contact",
+    "apply": "Apply",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out"
+  },
+  "navigation": {
+    "home": "Home",
+    "properties": "Properties",
+    "about": "About",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "status": {
+    "available": "Available",
+    "rented": "Rented",
+    "maintenance": "Maintenance",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "completed": "Completed",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "time": {
+    "perMonth": "per month",
+    "perYear": "per year",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "tomorrow": "Tomorrow"
+  },
+  "currency": {
+    "tsh": "TSh",
+    "usd": "USD",
+    "eur": "EUR"
+  },
+  "messages": {
+    "welcome": "Welcome to NyumbaTZ",
+    "noResults": "No results found",
+    "tryAgain": "Please try again",
+    "success": "Operation completed successfully",
+    "error": "Something went wrong",
+    "loading": "Loading, please wait...",
+    "comingSoon": "Coming soon",
+    "underMaintenance": "Under maintenance"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email",
+    "phone": "Please enter a valid phone number",
+    "minLength": "Minimum {{count}} characters required",
+    "maxLength": "Maximum {{count}} characters allowed",
+    "invalidFormat": "Invalid format"
+  },
+  "language": {
+    "english": "English",
+    "swahili": "Kiswahili",
+    "selectLanguage": "Select Language",
+    "changeLanguage": "Change Language"
+  }
+}
