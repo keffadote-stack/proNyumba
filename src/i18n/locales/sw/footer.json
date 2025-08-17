@@ -1,6 +1,6 @@
 {
   "company": {
-    "name": "NyumbaTZ",
+    "name": "NyumbaLink",
     "description": "Mshirika wako wa kuaminika wa kupata nyumba kamili Tanzania. Kuunganisha wamiliki wa mali na wapangaji katika miji mikuu.",
     "descriptionSwahili": "Mshirika wako wa kuaminika wa kupata nyumba kamili Tanzania."
   },
@@ -35,7 +35,7 @@
     "title": "Wasiliana Nasi",
     "phone": "+255 123 456 789",
     "phoneLabel": "Msaada wa Saa 24/7",
-    "email": "info@nyumbatz.com",
+    "email": "info@nyumbalink.com",
     "emailLabel": "Maswali ya jumla",
     "whatsapp": "Msaada wa WhatsApp",
     "whatsappNumber": "+255 987 654 321",
@@ -53,7 +53,7 @@
     "subscribeSwahili": "Jiunge"
   },
   "bottom": {
-    "copyright": "© {{year}} NyumbaTZ. Haki zote zimehifadhiwa.",
+    "copyright": "© {{year}} NyumbaLink. Haki zote zimehifadhiwa.",
     "madeWith": "Imetengenezwa kwa",
     "by": "na MalixTechnologies",
     "poweredBy": "Inaendeshwa na teknolojia ya kisasa",

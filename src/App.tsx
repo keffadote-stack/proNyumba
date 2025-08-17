@@ -25,12 +25,16 @@
  */
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
-import LandlordDashboard from './pages/LandlordDashboard';
+
+import SuperAdminDashboard from './pages/SuperAdminDashboard';
+import PropertyAdminDashboard from './pages/PropertyAdminDashboard';
+import TenantDashboard from './pages/TenantDashboard';
 import AuthModal from './components/AuthModal';
 import { useAuth } from './contexts/AuthContext';
 
@@ -72,14 +76,44 @@ function AppContent() {
     setShowAuthModal(true);
   };
 
+  /**
+   * ROLE-BASED REDIRECT COMPONENT
+   * 
+   * Redirects authenticated users to their appropriate dashboard
+   */
+  const RoleBasedRedirect = () => {
+    if (!user || !profile) {
+      return <HomePage />;
+    }
+
+    // Redirect based on user role
+    switch (profile.user_role) {
+      case 'super_admin':
+        return <Navigate to="/super-admin" replace />;
+      case 'property_admin':
+        return <Navigate to="/dashboard" replace />;
+      case 'tenant':
+        return <Navigate to="/tenant-dashboard" replace />;
+      default:
+        return <HomePage />;
+    }
+  };
+
   // Show loading spinner while checking authentication
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading NyumbaTZ...</p>
+          <p className="text-gray-600">Loading NyumbaLink...</p>
           <p className="text-sm text-gray-500 mt-2">Initializing application...</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+          >
+            Refresh Page
+          </button>
+          <p className="text-xs text-gray-400 mt-2">If this persists, try refreshing the page</p>
         </div>
       </div>
     );
@@ -103,25 +137,71 @@ function AppContent() {
           {/* MAIN CONTENT AREA - Flexible height */}
           <main className="flex-1">
             <Routes>
-              {/* HOME PAGE ROUTE */}
-              <Route path="/" element={<HomePage />} />
+              {/* HOME PAGE ROUTE - Redirects authenticated users to their dashboard */}
+              <Route path="/" element={<RoleBasedRedirect />} />
               
-              {/* LANDLORD DASHBOARD ROUTE - Protected */}
+              {/* SUPER ADMIN DASHBOARD ROUTE - Protected */}
               <Route 
-                path="/dashboard" 
+                path="/super-admin" 
                 element={
-                  user && profile?.user_role === 'landlord' ? (
-                    <LandlordDashboard />
+                  user && profile?.user_role === 'super_admin' ? (
+                    <SuperAdminDashboard />
                   ) : (
                     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                       <div className="text-center">
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">Access Restricted</h2>
-                        <p className="text-gray-600 mb-6">You need to be logged in as a landlord to access this page.</p>
+                        <p className="text-gray-600 mb-6">You need to be logged in as a Super Admin to access this page.</p>
                         <button
                           onClick={() => handleAuthClick('login')}
                           className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                          Sign In as Landlord
+                          Sign In as Super Admin
+                        </button>
+                      </div>
+                    </div>
+                  )
+                }
+              />
+
+              {/* PROPERTY ADMIN DASHBOARD ROUTE - Protected */}
+              <Route 
+                path="/dashboard" 
+                element={
+                  user && profile?.user_role === 'property_admin' ? (
+                    <PropertyAdminDashboard />
+                  ) : (
+                    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                      <div className="text-center">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">Access Restricted</h2>
+                        <p className="text-gray-600 mb-6">You need to be logged in as a Property Admin to access this page.</p>
+                        <button
+                          onClick={() => handleAuthClick('login')}
+                          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                          Sign In as Property Admin
+                        </button>
+                      </div>
+                    </div>
+                  )
+                }
+              />
+
+              {/* TENANT DASHBOARD ROUTE - Protected */}
+              <Route 
+                path="/tenant-dashboard" 
+                element={
+                  user && profile?.user_role === 'tenant' ? (
+                    <TenantDashboard />
+                  ) : (
+                    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                      <div className="text-center">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">Access Restricted</h2>
+                        <p className="text-gray-600 mb-6">You need to be logged in as a Tenant to access this page.</p>
+                        <button
+                          onClick={() => handleAuthClick('login')}
+                          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                          Sign In as Tenant
                         </button>
                       </div>
                     </div>
@@ -138,14 +218,14 @@ function AppContent() {
           {/* GLOBAL FOOTER - Appears on all pages */}
           <Footer />
         </div>
-      </Router>
 
-      {/* AUTHENTICATION MODAL */}
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        defaultMode={authMode}
-      />
+        {/* AUTHENTICATION MODAL - Inside Router context */}
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          defaultMode={authMode}
+        />
+      </Router>
     </>
   );
 }
@@ -157,9 +237,11 @@ function AppContent() {
  */
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

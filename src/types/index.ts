@@ -1,5 +1,5 @@
 /**
- * TYPE DEFINITIONS FOR NYUMBATZ RENTAL PLATFORM
+ * TYPE DEFINITIONS FOR NYUMBALINK
  * 
  * This file contains all TypeScript interfaces and types used throughout the application.
  * These types ensure type safety and provide clear contracts between components.
@@ -86,50 +86,129 @@ export interface ViewingRequest {
 /**
  * USER INTERFACE
  * 
- * Represents system users (tenants, property owners, administrators).
- * Supports role-based access control and user verification.
+ * Represents system users with three-tier role system.
+ * Supports role-based access control and employee management.
  * 
- * USAGE: Authentication, user profiles, role-based permissions
+ * USAGE: Authentication, user profiles, role-based permissions, employee management
  * SCALABILITY:
- * - Role enum supports multiple user types
+ * - Three-tier role system (Super Admin, Property Admin, Tenant)
+ * - Employee management fields for Property Admins
  * - Verification system for trust and safety
  * - Profile image support for enhanced user experience
- * - Can be extended with preferences, settings, etc.
  */
 export interface User {
   id: string;                   // Unique user identifier (matches auth system)
   fullName: string;             // User's complete name
   email: string;                // Email address (unique, used for login)
   phoneNumber: string;          // Phone number for contact and verification
-  userRole: 'admin' | 'tenant' | 'owner';  // Role-based access control
+  userRole: 'super_admin' | 'property_admin' | 'tenant';  // Three-tier role system
   isVerified: boolean;          // Account verification status
+  isActive: boolean;            // Account active status
   profileImage?: string;        // Optional profile picture URL
   registrationDate: string;     // When user account was created
+
+  // Employee-specific fields (for Property Admins)
+  employeeId?: string;          // Unique employee identifier
+  hiredDate?: string;           // When employee was hired
+  performanceRating?: number;   // Employee performance rating (0-5)
+}
+
+/**
+ * EMPLOYEE INVITATION INTERFACE
+ * 
+ * Represents invitations sent to potential Property Admin employees.
+ * Manages the employee onboarding workflow.
+ */
+export interface EmployeeInvitation {
+  id: string;                   // Unique invitation identifier
+  email: string;                // Invited employee email
+  fullName: string;             // Invited employee name
+  invitedBy: string;            // Super Admin who sent invitation
+  status: 'pending' | 'accepted' | 'expired';  // Invitation status
+  invitationToken: string;      // Unique token for invitation link
+  expiresAt: string;            // When invitation expires
+  createdAt: string;            // When invitation was sent
+}
+
+/**
+ * EMPLOYEE PERFORMANCE INTERFACE
+ * 
+ * Represents employee performance metrics and KPIs.
+ * Used for tracking Property Admin productivity.
+ */
+export interface EmployeePerformance {
+  id: string;                   // Unique performance record identifier
+  adminId: string;              // Property Admin user ID
+  monthYear: string;            // Performance period (YYYY-MM format)
+  propertiesManaged: number;    // Number of properties assigned
+  bookingsReceived: number;     // Total booking requests received
+  bookingsApproved: number;     // Booking requests approved
+  bookingsCompleted: number;    // Successful bookings completed
+  conversionRate: number;       // Booking conversion percentage
+  averageResponseTime: number;  // Average response time in hours
+  tenantSatisfactionRating: number;  // Average tenant satisfaction (1-5)
+  revenueGenerated: number;     // Revenue generated through bookings
+  occupancyRate: number;        // Property occupancy percentage
+}
+
+/**
+ * BOOKING REQUEST INTERFACE
+ * 
+ * Represents a tenant's request to view a property with enhanced workflow.
+ * Manages the complete booking lifecycle from request to completion.
+ * 
+ * USAGE: Booking request forms, admin approval workflow, notifications
+ * SCALABILITY: 
+ * - Complete status workflow management
+ * - Admin response and scheduling system
+ * - Feedback collection system
+ * - Performance tracking integration
+ */
+export interface BookingRequest {
+  id: string;                   // Unique request identifier
+  propertyId: string;           // Reference to the property being viewed
+  tenantId: string;             // Reference to the requesting tenant
+  adminId: string;              // Reference to the assigned property admin
+  tenantName: string;           // Tenant's full name
+  tenantPhone: string;          // Tenant's phone number
+  tenantEmail: string;          // Tenant's email address
+  preferredViewingDate: string; // Preferred viewing date (ISO date string)
+  preferredViewingTime: string; // Preferred time slot (e.g., "14:00")
+  message?: string;             // Optional additional notes or requirements
+  status: 'pending' | 'approved' | 'declined' | 'completed' | 'cancelled';  // Request workflow status
+  adminResponse?: string;       // Admin's response message
+  scheduledDate?: string;       // Actual scheduled date/time (ISO string)
+  feedbackRating?: number;      // Tenant feedback rating (1-5)
+  feedbackComment?: string;     // Tenant feedback comment
+  createdAt: string;            // When the request was submitted
+  updatedAt: string;            // When the request was last updated
 }
 
 /**
  * PAYMENT INTERFACE
  * 
- * Represents payment transactions with automatic commission calculation.
- * Supports multiple payment methods popular in Tanzania.
+ * Represents payment transactions with automatic service fee calculation.
+ * Supports multiple payment methods and transparent fee structure.
  * 
- * USAGE: Payment processing, financial reporting, commission tracking
+ * USAGE: Payment processing, financial reporting, service fee tracking
  * SCALABILITY:
  * - Multiple payment method support
- * - Automatic commission calculation (15% platform fee)
+ * - Automatic service fee calculation (20% platform fee)
  * - Transaction reference for payment gateway integration
  * - Status tracking for payment workflow
  */
 export interface Payment {
   id: string;                   // Unique payment identifier
+  bookingId: string;            // Reference to the booking request
   propertyId: string;           // Reference to the rented property
   tenantId: string;             // Reference to the paying tenant
-  amountTotal: number;          // Total amount paid by tenant
-  commissionAmount: number;     // Platform commission (15% of total)
-  ownerAmount: number;          // Amount paid to property owner (85% of total)
-  paymentMethod: 'mpesa' | 'tigo-pesa' | 'airtel-money' | 'bank-transfer';  // Payment gateway used
+  adminId: string;              // Reference to the property admin
+  rentAmount: number;           // Base rent amount
+  serviceFeeAmount: number;     // Platform service fee (20% of rent)
+  totalAmount: number;          // Total amount paid by tenant (rent + service fee)
+  paymentMethod: 'mpesa' | 'tigo-pesa' | 'airtel-money' | 'bank-transfer' | 'stripe';  // Payment gateway used
   transactionReference: string; // Payment gateway transaction ID
-  status: 'pending' | 'completed' | 'failed';  // Payment processing status
+  status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';  // Payment processing status
   paymentDate: string;          // When payment was processed
 }
 

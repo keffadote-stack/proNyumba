@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Supabase Database Sync",
+  "description": "Monitors app files for changes and automatically updates the remote Supabase database to keep data synchronized",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/**/*.tsx",
+      "src/**/*.ts",
+      "supabase/migrations/*.sql",
+      "src/lib/supabase.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "App files have been modified. Please analyze the changes and update the remote Supabase database accordingly. This may involve running migrations, updating table schemas, syncing data, or pushing configuration changes to ensure the remote database stays in sync with the local application state."
+  }
+}

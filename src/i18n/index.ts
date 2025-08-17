@@ -1,159 +1,439 @@
 /**
  * INTERNATIONALIZATION CONFIGURATION
  * 
- * This file sets up react-i18next for multi-language support in the NyumbaTZ platform.
- * Supports English and Swahili with automatic language detection and persistence.
- * 
- * KEY FEATURES:
- * - Automatic language detection from browser settings
- * - Language preference persistence in localStorage
- * - Fallback to English if translation missing
- * - Dynamic language switching without page reload
- * - Namespace organization for better code splitting
- * 
- * SCALABILITY NOTES:
- * - Easy to add new languages by adding translation files
- * - Namespace system supports feature-based translation organization
- * - Can be extended with pluralization rules for complex languages
- * - Supports interpolation for dynamic content
- * - Ready for lazy loading of translation files
+ * Sets up i18next for multi-language support in the application.
+ * Currently supports English and Swahili.
  */
 
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// ENGLISH TRANSLATIONS
-import enCommon from './locales/en/common.json';
-import enHeader from './locales/en/header.json';
-import enHero from './locales/en/hero.json';
-import enProperty from './locales/en/property.json';
-import enFooter from './locales/en/footer.json';
-import enSearch from './locales/en/search.json';
-
-// SWAHILI TRANSLATIONS
-import swCommon from './locales/sw/common.json';
-import swHeader from './locales/sw/header.json';
-import swHero from './locales/sw/hero.json';
-import swProperty from './locales/sw/property.json';
-import swFooter from './locales/sw/footer.json';
-import swSearch from './locales/sw/search.json';
-
-/**
- * I18N CONFIGURATION
- * 
- * Configures react-i18next with language detection, fallbacks, and namespaces.
- * Uses browser language detection with localStorage persistence.
- */
-i18n
-  // LANGUAGE DETECTION PLUGIN
-  // Automatically detects user's preferred language from browser settings
-  .use(LanguageDetector)
-  
-  // REACT INTEGRATION PLUGIN
-  // Provides React hooks and components for translations
-  .use(initReactI18next)
-  
-  // INITIALIZATION CONFIGURATION
-  .init({
-    // LANGUAGE DETECTION CONFIGURATION
-    detection: {
-      // Detection order: localStorage -> navigator -> fallback
-      order: ['localStorage', 'navigator', 'htmlTag'],
-      
-      // Cache user's language choice in localStorage
-      caches: ['localStorage'],
-      
-      // localStorage key for language preference
-      lookupLocalStorage: 'nyumbatz-language',
-      
-      // Check browser language settings
-      checkWhitelist: true
+// Translation resources
+const resources = {
+  en: {
+    common: {
+      loading: 'Loading...',
+      error: 'Error',
+      success: 'Success',
+      cancel: 'Cancel',
+      save: 'Save',
+      delete: 'Delete',
+      edit: 'Edit',
+      view: 'View',
+      search: 'Search',
+      filter: 'Filter',
+      sort: 'Sort',
+      next: 'Next',
+      previous: 'Previous',
+      close: 'Close'
     },
-
-    // FALLBACK LANGUAGE CONFIGURATION
-    fallbackLng: 'en',              // Default to English if detection fails
-    lng: 'en',                      // Initial language (will be overridden by detection)
-    
-    // SUPPORTED LANGUAGES
-    supportedLngs: ['en', 'sw'],    // English and Swahili only
-    
-    // NAMESPACE CONFIGURATION
-    // Organizes translations by feature/component for better maintainability
-    defaultNS: 'common',            // Default namespace for general translations
-    ns: ['common', 'header', 'hero', 'property', 'footer', 'search'],
-    
-    // DEVELOPMENT CONFIGURATION
-    debug: process.env.NODE_ENV === 'development', // Enable debug logs in development
-    
-    // INTERPOLATION CONFIGURATION
-    interpolation: {
-      escapeValue: false,           // React already escapes values
-      formatSeparator: ',',         // Separator for format functions
-    },
-    
-    // TRANSLATION RESOURCES
-    // Organized by language -> namespace -> translations
-    resources: {
-      // ENGLISH TRANSLATIONS
-      en: {
-        common: enCommon,           // General UI text, buttons, messages
-        header: enHeader,           // Navigation, search, user menu
-        hero: enHero,              // Landing section, search form
-        property: enProperty,       // Property cards, details, amenities
-        footer: enFooter,          // Footer links, contact info
-        search: enSearch           // Search filters, results, sorting
+    title: {
+      maintitle: {
+        highlight: 'Find Your Perfect Home in Tanzania'
       },
-      
-      // SWAHILI TRANSLATIONS
-      sw: {
-        common: swCommon,           // Maandishi ya jumla, vitufe, ujumbe
-        header: swHeader,           // Urambazaji, utafutaji, menyu ya mtumiaji
-        hero: swHero,              // Sehemu ya kuanzia, fomu ya utafutaji
-        property: swProperty,       // Kadi za mali, maelezo, huduma
-        footer: swFooter,          // Viungo vya footer, maelezo ya mawasiliano
-        search: swSearch           // Vichujio vya utafutaji, matokeo, upangaji
+      subtitle: 'Discover quality rental properties across major Tanzanian cities'
+    },
+    searchForm: {
+      location: {
+        label: 'Location',
+        allCities: 'All Cities'
+      },
+      propertyType: {
+        label: 'Property Type',
+        allTypes: 'All Types',
+        house: 'House',
+        apartment: 'Apartment',
+        studio: 'Studio',
+        villa: 'Villa',
+        room: 'Room'
+      },
+      bedrooms: {
+        label: 'Bedrooms',
+        any: 'Any',
+        bedroom: 'bedroom',
+        bedrooms: 'bedrooms'
+      },
+      price: {
+        label: 'Price Range',
+        helperText: 'Enter your budget range'
+      },
+      searchButton: 'Search Properties',
+      tips: 'Search tips: Try "Dar es Salaam", "500000", or "2 bedrooms"'
+    },
+    currency: {
+      tshs: 'TSh'
+    },
+    stats: {
+      properties: {
+        count: '1,000+',
+        label: 'Properties Available'
+      },
+      cities: {
+        count: '10+',
+        label: 'Cities Covered'
+      },
+      tenants: {
+        count: '5,000+',
+        label: 'Happy Tenants'
       }
     },
+    hero: {
+      title: {
+        main: 'Find Your Perfect',
+        highlight: 'Home in Tanzania'
+      },
+      subtitle: 'Discover quality rental properties across major Tanzanian cities',
+      searchForm: {
+        location: {
+          label: 'Location',
+          allCities: 'All Cities'
+        },
+        propertyType: {
+          label: 'Property Type',
+          allTypes: 'All Types',
+          house: 'House',
+          apartment: 'Apartment',
+          studio: 'Studio',
+          villa: 'Villa',
+          room: 'Room'
+        },
+        bedrooms: {
+          label: 'Bedrooms',
+          any: 'Any',
+          bedroom: 'bedroom',
+          bedrooms: 'bedrooms'
+        },
+        price: {
+          label: 'Price Range',
+          anyPrice: 'Any Price',
+          helperText: 'Enter your budget range'
+        },
+        searchButton: 'Search Properties',
+        tips: 'Search tips: Try "Dar es Salaam", "500000", or "2 bedrooms"'
+      },
+      currency: {
+        tshs: 'TSh'
+      },
+      stats: {
+        properties: {
+          count: '1,000+',
+          label: 'Properties Available'
+        },
+        cities: {
+          count: '10+',
+          label: 'Cities Covered'
+        },
+        tenants: {
+          count: '5,000+',
+          label: 'Happy Tenants'
+        }
+      }
+    },
+    header: {
+      navigation: {
+        properties: 'Properties',
+        about: 'About',
+        contact: 'Contact'
+      },
+      search: {
+        placeholder: 'Search properties...',
+        expandedPlaceholder: 'Search by location, price, or property type...',
+        popularSearches: 'Popular Searches'
+      },
+      auth: {
+        signIn: 'Sign In',
+        signUp: 'Sign Up',
+        signOut: 'Sign Out'
+      },
+      user: {
+        favorites: 'Favorites',
+        notifications: 'Notifications',
+        settings: 'Settings'
+      },
+      mobile: {
+        menu: 'Menu',
+        close: 'Close'
+      }
+    },
+    footer: {
+      company: {
+        name: 'NyumbaLink',
+        description: 'Your trusted platform for finding quality rental properties in Tanzania. Connecting property owners with tenants through a seamless, secure experience.'
+      },
+      social: {
+        title: 'Follow Us'
+      },
+      language: {
+        selectLanguage: 'Select Language'
+      },
+      quickLinks: {
+        title: 'Quick Links',
+        searchProperties: 'Search Properties',
+        listProperty: 'List Your Property',
+        howItWorks: 'How It Works',
+        pricing: 'Pricing',
+        faqs: 'FAQs'
+      },
+      support: {
+        title: 'Support',
+        supportTitle: 'Support',
+        helpCenter: 'Help Center',
+        contactSupport: 'Contact Support',
+        reportIssue: 'Report Issue',
+        safetyTips: 'Safety Tips',
+        legalTitle: 'Legal',
+        termsOfService: 'Terms of Service',
+        privacyPolicy: 'Privacy Policy',
+        cookiePolicy: 'Cookie Policy',
+        refundPolicy: 'Refund Policy'
+      },
+      contact: {
+        title: 'Contact Info',
+        phone: '+255 123 456 789',
+        phoneLabel: 'Phone',
+        email: 'info@nyumbalink.co.tz',
+        emailLabel: 'Email',
+        whatsapp: 'WhatsApp',
+        whatsappNumber: '+255 123 456 789',
+        address: '123 Uhuru Street, Dar es Salaam',
+        addressLabel: 'Address',
+        citiesTitle: 'We Serve'
+      },
+      newsletter: {
+        title: 'Stay Updated',
+        description: 'Get the latest property listings and market insights delivered to your inbox.',
+        subscribe: 'Subscribe'
+      },
+      bottom: {
+        copyright: '© 2024 NyumbaLink. All rights reserved.',
+        madeWith: 'Made with',
+        by: 'by',
+        systemStatus: 'System Status'
+      }
+    }
+  },
+  sw: {
+    common: {
+      loading: 'Inapakia...',
+      error: 'Kosa',
+      success: 'Mafanikio',
+      cancel: 'Ghairi',
+      save: 'Hifadhi',
+      delete: 'Futa',
+      edit: 'Hariri',
+      view: 'Ona',
+      search: 'Tafuta',
+      filter: 'Chuja',
+      sort: 'Panga',
+      next: 'Ifuatayo',
+      previous: 'Iliyotangulia',
+      close: 'Funga'
+    },
+    title: {
+      maintitle: {
+        highlight: 'Pata Nyumba Yako Bora Tanzania'
+      },
+      subtitle: 'Gundua nyumba za ubora za kukodisha katika miji mikuu ya Tanzania'
+    },
+    searchForm: {
+      location: {
+        label: 'Mahali',
+        allCities: 'Miji Yote'
+      },
+      propertyType: {
+        label: 'Aina ya Nyumba',
+        allTypes: 'Aina Zote',
+        house: 'Nyumba',
+        apartment: 'Ghorofa',
+        studio: 'Studio',
+        villa: 'Villa',
+        room: 'Chumba'
+      },
+      bedrooms: {
+        label: 'Vyumba vya Kulala',
+        any: 'Yoyote',
+        bedroom: 'chumba',
+        bedrooms: 'vyumba'
+      },
+      price: {
+        label: 'Bei',
+        helperText: 'Weka bajeti yako'
+      },
+      searchButton: 'Tafuta Nyumba',
+      tips: 'Vidokezo: Jaribu "Dar es Salaam", "500000", au "vyumba 2"'
+    },
+    currency: {
+      tshs: 'TSh'
+    },
+    stats: {
+      properties: {
+        count: '1,000+',
+        label: 'Nyumba Zinapatikana'
+      },
+      cities: {
+        count: '10+',
+        label: 'Miji Inayohudumika'
+      },
+      tenants: {
+        count: '5,000+',
+        label: 'Wakodishaji Wenye Furaha'
+      }
+    },
+    hero: {
+      title: {
+        main: 'Pata Nyumba Yako',
+        highlight: 'Bora Tanzania'
+      },
+      subtitle: 'Gundua nyumba za ubora za kukodisha katika miji mikuu ya Tanzania',
+      searchForm: {
+        location: {
+          label: 'Mahali',
+          allCities: 'Miji Yote'
+        },
+        propertyType: {
+          label: 'Aina ya Nyumba',
+          allTypes: 'Aina Zote',
+          house: 'Nyumba',
+          apartment: 'Ghorofa',
+          studio: 'Studio',
+          villa: 'Villa',
+          room: 'Chumba'
+        },
+        bedrooms: {
+          label: 'Vyumba vya Kulala',
+          any: 'Yoyote',
+          bedroom: 'chumba',
+          bedrooms: 'vyumba'
+        },
+        price: {
+          label: 'Bei',
+          anyPrice: 'Bei Yoyote',
+          helperText: 'Weka bajeti yako'
+        },
+        searchButton: 'Tafuta Nyumba',
+        tips: 'Vidokezo: Jaribu "Dar es Salaam", "500000", au "vyumba 2"'
+      },
+      currency: {
+        tshs: 'TSh'
+      },
+      stats: {
+        properties: {
+          count: '1,000+',
+          label: 'Nyumba Zinapatikana'
+        },
+        cities: {
+          count: '10+',
+          label: 'Miji Inayohudumika'
+        },
+        tenants: {
+          count: '5,000+',
+          label: 'Wakodishaji Wenye Furaha'
+        }
+      }
+    },
+    header: {
+      navigation: {
+        properties: 'Nyumba',
+        about: 'Kuhusu',
+        contact: 'Mawasiliano'
+      },
+      search: {
+        placeholder: 'Tafuta nyumba...',
+        expandedPlaceholder: 'Tafuta kwa eneo, bei, au aina ya nyumba...',
+        popularSearches: 'Utafutaji Maarufu'
+      },
+      auth: {
+        signIn: 'Ingia',
+        signUp: 'Jisajili',
+        signOut: 'Toka'
+      },
+      user: {
+        favorites: 'Pendekezo',
+        notifications: 'Arifa',
+        settings: 'Mipangilio'
+      },
+      mobile: {
+        menu: 'Menyu',
+        close: 'Funga'
+      }
+    },
+    footer: {
+      company: {
+        name: 'NyumbaLink',
+        description: 'Jukwaa lako la kuaminika la kupata nyumba za ubora za kukodisha Tanzania. Tunawaungania wamiliki wa nyumba na wakodishaji kupitia uzoefu salama na rahisi.'
+      },
+      social: {
+        title: 'Tufuate'
+      },
+      language: {
+        selectLanguage: 'Chagua Lugha'
+      },
+      quickLinks: {
+        title: 'Viungo vya Haraka',
+        searchProperties: 'Tafuta Nyumba',
+        listProperty: 'Orodhesha Nyumba Yako',
+        howItWorks: 'Jinsi Inavyofanya Kazi',
+        pricing: 'Bei',
+        faqs: 'Maswali Yanayoulizwa Mara kwa Mara'
+      },
+      support: {
+        title: 'Msaada',
+        supportTitle: 'Msaada',
+        helpCenter: 'Kituo cha Msaada',
+        contactSupport: 'Wasiliana na Msaada',
+        reportIssue: 'Ripoti Tatizo',
+        safetyTips: 'Vidokezo vya Usalama',
+        legalTitle: 'Kisheria',
+        termsOfService: 'Masharti ya Huduma',
+        privacyPolicy: 'Sera ya Faragha',
+        cookiePolicy: 'Sera ya Vidakuzi',
+        refundPolicy: 'Sera ya Kurudisha Pesa'
+      },
+      contact: {
+        title: 'Maelezo ya Mawasiliano',
+        phone: '+255 123 456 789',
+        phoneLabel: 'Simu',
+        email: 'info@nyumbalink.co.tz',
+        emailLabel: 'Barua Pepe',
+        whatsapp: 'WhatsApp',
+        whatsappNumber: '+255 123 456 789',
+        address: '123 Barabara ya Uhuru, Dar es Salaam',
+        addressLabel: 'Anwani',
+        citiesTitle: 'Tunahudumia'
+      },
+      newsletter: {
+        title: 'Baki Umejulishwa',
+        description: 'Pata orodha za nyumba za hivi karibuni na maarifa ya soko yaliyoletwa kwenye sanduku lako la barua.',
+        subscribe: 'Jiandikishe'
+      },
+      bottom: {
+        copyright: '© 2024 NyumbaLink. Haki zote zimehifadhiwa.',
+        madeWith: 'Imetengenezwa kwa',
+        by: 'na',
+        systemStatus: 'Hali ya Mfumo'
+      }
+    }
+  }
+};
+
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources,
+    fallbackLng: 'en',
+    debug: false,
+    lng: 'en', // Force English language
     
-    // REACT SPECIFIC CONFIGURATION
-    react: {
-      // Use React Suspense for loading states
-      useSuspense: true,
-      
-      // Bind i18n instance to React component tree
-      bindI18n: 'languageChanged',
-      
-      // Re-render components when language changes
-      bindI18nStore: 'added removed',
-      
-      // Translation component configuration
-      transEmptyNodeValue: '',     // Empty node fallback
-      transSupportBasicHtmlNodes: true, // Support basic HTML in translations
-      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i', 'em'] // Allowed HTML tags
+    interpolation: {
+      escapeValue: false
+    },
+    
+    detection: {
+      order: ['localStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage']
     }
   });
 
 export default i18n;
-
-/**
- * USAGE EXAMPLES:
- * 
- * 1. Basic Translation Hook:
- *    const { t } = useTranslation('common');
- *    <button>{t('buttons.save')}</button>
- * 
- * 2. Multiple Namespaces:
- *    const { t } = useTranslation(['common', 'property']);
- *    <h1>{t('property:title')}</h1>
- * 
- * 3. Interpolation:
- *    <p>{t('common:welcome', { name: 'John' })}</p>
- * 
- * 4. Language Switching:
- *    const { i18n } = useTranslation();
- *    i18n.changeLanguage('sw');
- * 
- * 5. Pluralization:
- *    <span>{t('property:bedrooms', { count: 3 })}</span>
- */

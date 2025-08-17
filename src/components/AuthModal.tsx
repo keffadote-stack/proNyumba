@@ -20,8 +20,10 @@
  */
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X, Mail, Lock, User, Phone, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import RoleSelector from './auth/RoleSelector';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -47,13 +49,31 @@ const AuthModal: React.FC<AuthModalProps> = ({
     password: '',
     fullName: '',
     phoneNumber: '',
-    userRole: 'tenant' as 'tenant' | 'landlord'
+    userRole: 'tenant' as 'super_admin' | 'property_admin' | 'tenant'
   });
 
-  // Auth context
-  const { signIn, signUp } = useAuth();
+  // Auth context and navigation
+  const { signIn, signUp, profile } = useAuth();
+  const navigate = useNavigate();
 
-  // Reset form when modal opens/closes
+  // Function to redirect user based on role
+  const redirectToRoleDashboard = (userRole: string) => {
+    switch (userRole) {
+      case 'super_admin':
+        navigate('/super-admin');
+        break;
+      case 'property_admin':
+        navigate('/dashboard');
+        break;
+      case 'tenant':
+        navigate('/tenant-dashboard');
+        break;
+      default:
+        navigate('/');
+    }
+  };
+
+  // Reset form when modal opens/closes or mode changes
   React.useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -69,6 +89,23 @@ const AuthModal: React.FC<AuthModalProps> = ({
     }
   }, [isOpen, defaultMode]);
 
+  // Update mode when defaultMode changes
+  React.useEffect(() => {
+    if (isOpen) {
+      setMode(defaultMode);
+    }
+  }, [defaultMode, isOpen]);
+
+  // Handle redirection when profile loads after successful login
+  React.useEffect(() => {
+    if (profile?.user_role && success && success.includes('Successfully signed in')) {
+      setTimeout(() => {
+        onClose();
+        redirectToRoleDashboard(profile.user_role);
+      }, 1500);
+    }
+  }, [profile, success, onClose]);
+
   // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -82,8 +119,11 @@ const AuthModal: React.FC<AuthModalProps> = ({
     return emailRegex.test(email);
   };
 
-  // Enhanced form validation
+  // Enhanced form validation with better error messages
   const validateForm = () => {
+    // Clear previous errors
+    setError(null);
+
     if (!formData.email || !formData.password) {
       setError('Email and password are required');
       return false;
@@ -151,7 +191,15 @@ const AuthModal: React.FC<AuthModalProps> = ({
           }
         } else {
           setSuccess('Successfully signed in!');
-          setTimeout(() => onClose(), 1000);
+          setTimeout(() => {
+            onClose();
+            // Wait a moment for profile to load, then redirect
+            setTimeout(() => {
+              if (profile?.user_role) {
+                redirectToRoleDashboard(profile.user_role);
+              }
+            }, 500);
+          }, 1000);
         }
       } else {
         console.log('Attempting signup...', { 
@@ -160,6 +208,16 @@ const AuthModal: React.FC<AuthModalProps> = ({
           phoneNumber: formData.phoneNumber,
           userRole: formData.userRole 
         });
+        
+        // Additional validation for signup
+        if (!formData.fullName.trim()) {
+          setError('Full name is required');
+          return;
+        }
+        if (!formData.phoneNumber.trim()) {
+          setError('Phone number is required');
+          return;
+        }
         
         const { error } = await signUp(formData.email, formData.password, {
           fullName: formData.fullName,
@@ -185,12 +243,11 @@ const AuthModal: React.FC<AuthModalProps> = ({
             setError(error.message || 'Failed to create account. Please try again.');
           }
         } else {
-          setSuccess('Account created successfully! You can now sign in.');
-          // Switch to login mode after successful signup
+          setSuccess('Account created successfully! Redirecting to your dashboard...');
+          // Close modal and redirect to appropriate dashboard
           setTimeout(() => {
-            setMode('login');
-            setSuccess(null);
-            setFormData(prev => ({ ...prev, password: '' })); // Clear password but keep email
+            onClose();
+            redirectToRoleDashboard(formData.userRole);
           }, 2000);
         }
       }
@@ -313,21 +370,15 @@ const AuthModal: React.FC<AuthModalProps> = ({
                   </div>
                 </div>
 
-                {/* User Role */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    I am a
-                  </label>
-                  <select
-                    name="userRole"
-                    value={formData.userRole}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    required
-                  >
-                    <option value="tenant">Tenant (Looking for property)</option>
-                    <option value="landlord">Landlord (Have property to rent)</option>
-                  </select>
+                {/* User Role Selection - Hidden since only tenant registration is allowed */}
+                <input type="hidden" name="userRole" value="tenant" />
+                
+                {/* Welcome Message */}
+                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="text-sm font-medium text-blue-900 mb-1">Join as a Tenant</h4>
+                  <p className="text-xs text-blue-700">
+                    Create your account to start browsing and booking properties across Tanzania.
+                  </p>
                 </div>
               </>
             )}
@@ -405,13 +456,22 @@ const AuthModal: React.FC<AuthModalProps> = ({
               {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}
               <button
                 onClick={() => {
-                  setMode(mode === 'login' ? 'register' : 'login');
+                  const newMode = mode === 'login' ? 'register' : 'login';
+                  setMode(newMode);
                   setError(null);
                   setSuccess(null);
+                  // Clear form data when switching modes
+                  setFormData({
+                    email: '',
+                    password: '',
+                    fullName: '',
+                    phoneNumber: '',
+                    userRole: 'tenant'
+                  });
                 }}
                 className="ml-1 text-blue-600 hover:text-blue-700 font-medium"
               >
-                {mode === 'login' ? 'Sign up' : 'Sign in'}
+                {mode === 'login' ? 'Create Account' : 'Sign In'}
               </button>
             </p>
           </div>

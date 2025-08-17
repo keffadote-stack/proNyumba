@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Filter, X, Sliders, Home, Building, Users, Car, Shield, Zap } from 'lucide-react';
 import { SearchFilters as SearchFiltersType } from '../types';
-import { tanzanianCities, propertyTypes, amenities } from '../data/mockData';
+import { tanzanianCities, propertyTypes, amenities } from '../data/constants';
 
 interface SearchFiltersProps {
   filters: SearchFiltersType;

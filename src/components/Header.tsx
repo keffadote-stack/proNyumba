@@ -46,7 +46,9 @@ import LanguageSwitcher from './LanguageSwitcher';
 interface HeaderProps {
   onSearch?: (query: string) => void;    // Callback for search functionality
   isAuthenticated?: boolean;             // User authentication state
-  onAuthClick?: () => void;              // Callback for auth actions (login/signup)
+  onAuthClick?: (mode?: 'login' | 'register') => void; // Callback for auth actions (login/signup)
+  user?: any;                           // User object from auth
+  profile?: any;                        // User profile data
 }
 
 /**
@@ -57,7 +59,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ 
   onSearch = () => {}, 
   isAuthenticated = false, 
-  onAuthClick = () => {} 
+  onAuthClick = () => {},
+  user,
+  profile
 }) => {
   // INTERNATIONALIZATION HOOKS
   const { t } = useTranslation(['header', 'common']);
@@ -139,12 +143,37 @@ const Header: React.FC<HeaderProps> = ({
    * 
    * Centralized navigation structure with internationalization support.
    * Easy to modify for different sections or languages.
+   * Role-based navigation for different user types.
    */
-  const navigationLinks = [
-    { name: t('header:navigation.properties'), href: '#properties', icon: Home },
-    { name: t('header:navigation.about'), href: '#about', icon: Info },
-    { name: t('header:navigation.contact'), href: '#contact', icon: Phone }
-  ];
+  const getNavigationLinks = () => {
+    const baseLinks = [
+      { name: t('header:navigation.properties'), href: '#properties', icon: Home },
+      { name: t('header:navigation.about'), href: '#about', icon: Info },
+      { name: t('header:navigation.contact'), href: '#contact', icon: Phone }
+    ];
+
+    // Add role-specific navigation
+    if (profile?.user_role === 'super_admin') {
+      return [
+        { name: 'Dashboard', href: '/super-admin', icon: Home },
+        ...baseLinks
+      ];
+    } else if (profile?.user_role === 'property_admin') {
+      return [
+        { name: 'Dashboard', href: '/property-admin', icon: Home },
+        ...baseLinks
+      ];
+    } else if (profile?.user_role === 'landlord') {
+      return [
+        { name: 'Dashboard', href: '/dashboard', icon: Home },
+        ...baseLinks
+      ];
+    }
+
+    return baseLinks;
+  };
+
+  const navigationLinks = getNavigationLinks();
 
   /**
    * SEARCH SUGGESTIONS DATA
@@ -333,9 +362,20 @@ const Header: React.FC<HeaderProps> = ({
                 
                 {/* User Profile Menu */}
                 <div className="flex items-center space-x-2 bg-gray-100 rounded-full pl-3 pr-2 py-1 hover:shadow-md transition-shadow duration-200 cursor-pointer">
-                  <span className="text-sm font-medium text-gray-700">David M.</span>
+                  <div className="text-right">
+                    <span className="text-sm font-medium text-gray-700 block">
+                      {profile?.full_name || 'User'}
+                    </span>
+                    {profile?.user_role && (
+                      <span className="text-xs text-gray-500 capitalize">
+                        {profile.user_role.replace('_', ' ')}
+                      </span>
+                    )}
+                  </div>
                   <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center">
-                    <User className="h-4 w-4 text-white" />
+                    <span className="text-white text-sm font-medium">
+                      {profile?.full_name?.charAt(0).toUpperCase() || 'U'}
+                    </span>
                   </div>
                 </div>
               </>
@@ -344,20 +384,20 @@ const Header: React.FC<HeaderProps> = ({
               <div className="flex items-center space-x-2 xl:space-x-3">
                 {/* Sign In Button */}
                 <button
-                  onClick={onAuthClick}
+                  onClick={() => onAuthClick('login')}
                   className="flex items-center space-x-2 text-gray-700 hover:text-teal-600 transition-colors duration-200 font-medium text-sm xl:text-base"
                 >
                   <LogIn className="h-4 w-4" />
-                  <span>{t('header:auth.signIn')}</span>
+                  <span>Sign In</span>
                 </button>
                 
                 {/* Sign Up Button */}
                 <button
-                  onClick={onAuthClick}
+                  onClick={() => onAuthClick('register')}
                   className="flex items-center space-x-2 bg-teal-600 text-white px-3 xl:px-4 py-2 rounded-full hover:bg-teal-700 transition-colors duration-200 font-medium text-sm xl:text-base"
                 >
                   <UserPlus className="h-4 w-4" />
-                  <span>{t('header:auth.signUp')}</span>
+                  <span>Sign Up</span>
                 </button>
               </div>
             )}
@@ -421,7 +461,7 @@ const Header: React.FC<HeaderProps> = ({
                   <span className="text-white font-bold text-sm">N</span>
                 </div>
                 <div>
-                  <h2 className="font-bold text-teal-600 text-lg">NyumbaTZ</h2>
+                  <h2 className="font-bold text-teal-600 text-lg">NyumbaLink</h2>
                   <p className="text-xs text-gray-600">Find Your Perfect Home</p>
                 </div>
               </div>
@@ -470,11 +510,18 @@ const Header: React.FC<HeaderProps> = ({
                   {/* User Profile Section */}
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg mb-4">
                     <div className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center">
-                      <User className="h-6 w-6 text-white" />
+                      <span className="text-white text-lg font-medium">
+                        {profile?.full_name?.charAt(0).toUpperCase() || 'U'}
+                      </span>
                     </div>
                     <div className="flex-1">
-                      <div className="font-medium text-gray-900">David Mwakibolwa</div>
-                      <div className="text-sm text-gray-500">david.mwakibolwa@email.com</div>
+                      <div className="font-medium text-gray-900">{profile?.full_name || 'User'}</div>
+                      <div className="text-sm text-gray-500">{profile?.email || user?.email}</div>
+                      {profile?.user_role && (
+                        <div className="text-xs text-teal-600 capitalize font-medium">
+                          {profile.user_role.replace('_', ' ')}
+                        </div>
+                      )}
                     </div>
                   </div>
                   
@@ -533,25 +580,25 @@ const Header: React.FC<HeaderProps> = ({
                     {/* Sign In Button */}
                     <button
                       onClick={() => {
-                        onAuthClick();
+                        onAuthClick('login');
                         setIsMenuOpen(false);
                       }}
                       className="w-full flex items-center justify-center space-x-2 px-4 py-3 border-2 border-teal-600 text-teal-600 rounded-lg hover:bg-teal-50 transition-colors duration-200 font-medium"
                     >
                       <LogIn className="h-5 w-5" />
-                      <span>{t('header:auth.signIn')}</span>
+                      <span>Sign In</span>
                     </button>
                     
                     {/* Sign Up Button */}
                     <button
                       onClick={() => {
-                        onAuthClick();
+                        onAuthClick('register');
                         setIsMenuOpen(false);
                       }}
                       className="w-full flex items-center justify-center space-x-2 bg-teal-600 text-white px-4 py-3 rounded-lg hover:bg-teal-700 transition-colors duration-200 font-medium shadow-md"
                     >
                       <UserPlus className="h-5 w-5" />
-                      <span>{t('header:auth.signUp')}</span>
+                      <span>Sign Up</span>
                     </button>
                   </div>
                 </div>

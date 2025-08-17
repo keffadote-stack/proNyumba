@@ -79,7 +79,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const error = validateFile(file);
-      
+
       if (error) {
         newErrors.push(`${file.name}: ${error}`);
         continue;
@@ -92,7 +92,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
         // Convert to data URL
         const dataURL = await fileToDataURL(file);
-        
+
         // Simulate upload progress
         for (let progress = 0; progress <= 100; progress += 20) {
           setUploadProgress(prev => ({ ...prev, [fileId]: progress }));
@@ -100,7 +100,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         }
 
         newImages.push(dataURL);
-        
+
         // Remove progress indicator
         setUploadProgress(prev => {
           const updated = { ...prev };
@@ -117,9 +117,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     if (newImages.length > 0) {
       onImagesChange([...images, ...newImages]);
     }
-    
+
     setErrors(newErrors);
-    
+
     // Clear errors after 5 seconds
     if (newErrors.length > 0) {
       setTimeout(() => setErrors([]), 5000);
@@ -140,7 +140,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       handleFileUpload(files);
@@ -172,11 +172,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     <div className="space-y-4">
       {/* Upload Area */}
       <div
-        className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer ${
-          isDragging
+        className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer ${isDragging
             ? 'border-blue-500 bg-blue-50'
             : 'border-gray-300 hover:border-blue-400 hover:bg-gray-50'
-        }`}
+          }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -190,7 +189,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               <Camera className="h-8 w-8 text-gray-600" />
             )}
           </div>
-          
+
           <div>
             <p className="text-lg font-medium text-gray-900 mb-1">
               {isDragging ? 'Drop images here' : 'Upload Property Images'}
@@ -202,7 +201,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               Supports JPG, PNG, GIF • Max {maxSizePerImage}MB per image • Up to {maxImages} images
             </p>
           </div>
-          
+
           <button
             type="button"
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
@@ -271,7 +270,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                     className="w-full h-full object-cover"
                   />
                 </div>
-                
+
                 {/* Remove button */}
                 <button
                   type="button"
@@ -283,7 +282,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 >
                   <X className="h-3 w-3" />
                 </button>
-                
+
                 {/* Primary image indicator */}
                 {index === 0 && (
                   <div className="absolute bottom-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
@@ -292,7 +291,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 )}
               </div>
             ))}
-            
+
             {/* Add more button */}
             {images.length < maxImages && (
               <button
